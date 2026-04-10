@@ -1,8 +1,11 @@
 {
-  "name": "@solteq/strapi-plugin-medusa-picker",
+  "name": "@zachariaz/strapi-plugin-medusa-picker",
   "version": "1.0.0",
   "description": "Strapi plugin for selecting Medusa products, categories, and collections via a modal picker",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "strapi": {
     "kind": "plugin",
     "name": "medusa-picker",
@@ -52,6 +55,7 @@
   },
   "peerDependencies": {
     "@strapi/strapi": "^5.0.0",
+    "react-intl": "^6.0.0",
     "@strapi/design-system": "^2.0.0",
     "@strapi/icons": "^2.0.0",
     "react": "^18.0.0",
@@ -76,6 +80,9 @@
       "optional": true
     },
     "styled-components": {
+      "optional": true
+    },
+    "react-intl": {
       "optional": true
     }
   }

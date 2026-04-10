@@ -21,7 +21,7 @@ A Strapi v5 custom field plugin for browsing and selecting products, categories,
 ## Installation
 
 ```bash
-npm install @solteq/strapi-plugin-medusa-picker
+npm install @zachariaz/strapi-plugin-medusa-picker
 ```
 
 ## Configuration
@@ -84,7 +84,7 @@ Selected items are stored as a JSON string:
 
 ```json
 [
-  { "medusa_id": "prod_01H123ABC", "type": "product", "name": "Blue T-Shirt" },
+  { "medusa_id": "prod_01H123ABC", "type": "product", "name": "Blue T-Shirt", "external_id": "strapi_123" },
   { "medusa_id": "pcol_01H456DEF", "type": "collection", "name": "Summer Sale" }
 ]
 ```
@@ -94,6 +94,7 @@ Selected items are stored as a JSON string:
 | `medusa_id` | The Medusa entity ID |
 | `type` | `product`, `collection`, or `category` |
 | `name` | Cached display name |
+| `external_id` | Optional. Medusa's external ID (e.g. Strapi entry ID). Populated when available from Medusa (products today; categories/collections when supported). |
 
 ### Storefront Usage
 
@@ -107,6 +108,8 @@ const productIds = references
 
 const products = await medusa.products.list({ id: productIds });
 ```
+
+When syncing with Strapi content types, `external_id` can be used to look up products by their Strapi entry ID (e.g. `fields=+external_id` when fetching from Medusa).
 
 ## Development
 
@@ -122,7 +125,7 @@ npm run verify   # Verify plugin structure
 ```bash
 npm run watch:link
 # In your Strapi project:
-# yalc add @solteq/strapi-plugin-medusa-picker
+# yalc add @zachariaz/strapi-plugin-medusa-picker
 # npm run develop
 ```
 

@@ -70,6 +70,7 @@ const medusa = ({ strapi }: { strapi: Core.Strapi }) => ({
     if (params.search) queryParams.set('q', params.search);
     if (params.limit) queryParams.set('limit', String(params.limit));
     if (params.offset) queryParams.set('offset', String(params.offset));
+    queryParams.set('fields', '+external_id');
 
     const response = await fetch(
       `${settings.medusa_url}/store/products?${queryParams.toString()}`,
@@ -101,6 +102,7 @@ const medusa = ({ strapi }: { strapi: Core.Strapi }) => ({
     if (params.search) queryParams.set('q', params.search);
     if (params.limit) queryParams.set('limit', String(params.limit));
     if (params.offset) queryParams.set('offset', String(params.offset));
+    queryParams.set('fields', '+external_id');
 
     const response = await fetch(
       `${settings.medusa_url}/store/product-categories?${queryParams.toString()}`,
@@ -132,6 +134,7 @@ const medusa = ({ strapi }: { strapi: Core.Strapi }) => ({
     if (params.search) queryParams.set('q', params.search);
     if (params.limit) queryParams.set('limit', String(params.limit));
     if (params.offset) queryParams.set('offset', String(params.offset));
+    queryParams.set('fields', '+external_id');
 
     const response = await fetch(
       `${settings.medusa_url}/store/collections?${queryParams.toString()}`,
