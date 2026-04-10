@@ -1,8 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import { Box, Button, DesignSystemProvider, Field, Flex } from '@strapi/design-system';
 import { Plus } from '@strapi/icons';
+import { useIntl } from 'react-intl';
 import { SelectedItemsList } from './SelectedItemsList';
 import { MedusaPickerModal } from './MedusaPickerModal';
+import pluginId from '../pluginId';
 import type { MedusaReference } from '../types';
 
 interface MedusaPickerInputProps {
@@ -31,6 +33,7 @@ export default function MedusaPickerInput({
   required,
   hint,
 }: MedusaPickerInputProps) {
+  const { formatMessage } = useIntl();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Parse the JSON string value
@@ -68,7 +71,7 @@ export default function MedusaPickerInput({
   return (
     <DesignSystemProvider>
       <Field.Root name={name} error={error} hint={hint} required={required}>
-        <Field.Label>{label || 'Medusa Picker'}</Field.Label>
+        <Field.Label>{label || formatMessage({ id: `${pluginId}.input.label`, defaultMessage: 'Medusa Picker' })}</Field.Label>
 
         <Box
           padding={4}
@@ -86,7 +89,7 @@ export default function MedusaPickerInput({
               disabled={disabled}
               fullWidth
             >
-              Select from Medusa
+              {formatMessage({ id: `${pluginId}.input.selectButton`, defaultMessage: 'Select from Medusa' })}
             </Button>
           </Flex>
         </Box>

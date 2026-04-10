@@ -91,6 +91,7 @@ function transformToEntities(
         thumbnail: product.thumbnail,
         sku: product.variants?.[0]?.sku,
         type,
+        external_id: product.external_id,
       };
     } else if (type === 'category') {
       const category = item as MedusaCategory;
@@ -99,6 +100,7 @@ function transformToEntities(
         name: category.name,
         handle: category.handle,
         type,
+        external_id: category.external_id,
       };
     } else {
       const collection = item as MedusaCollection;
@@ -107,6 +109,7 @@ function transformToEntities(
         name: collection.title,
         handle: collection.handle,
         type,
+        external_id: collection.external_id,
       };
     }
   });

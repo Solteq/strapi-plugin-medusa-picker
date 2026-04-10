@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -8,11 +8,13 @@ import {
   Modal,
   Typography,
 } from '@strapi/design-system';
+import { useIntl } from 'react-intl';
 import { FilterBar } from './FilterBar';
 import type { ViewMode } from './FilterBar';
 import { ProductCard } from './ProductCard';
 import { useMedusaData } from '../hooks/useMedusaData';
 import { useDebounce } from '../hooks/useDebounce';
+import pluginId from '../pluginId';
 import type { MedusaEntity, MedusaEntityType, MedusaReference } from '../types';
 
 interface MedusaPickerModalProps {
@@ -28,6 +30,7 @@ export const MedusaPickerModal = ({
   onConfirm,
   initialSelected,
 }: MedusaPickerModalProps) => {
+  const { formatMessage } = useIntl();
   const [search, setSearch] = useState('');
   const [entityType, setEntityType] = useState<MedusaEntityType>('product');
   const [pageSize, setPageSize] = useState(15);
@@ -59,6 +62,7 @@ export const MedusaPickerModal = ({
           medusa_id: entity.id,
           type: entity.type,
           name: entity.name,
+          ...(entity.external_id && { external_id: entity.external_id }),
         });
       }
       return newSelected;
@@ -86,7 +90,7 @@ export const MedusaPickerModal = ({
     <Modal.Root open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <Modal.Content style={{ maxWidth: '900px', width: '90vw' }}>
         <Modal.Header>
-          <Modal.Title>Select from Medusa</Modal.Title>
+          <Modal.Title>{formatMessage({ id: `${pluginId}.modal.title`, defaultMessage: 'Select from Medusa' })}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Flex direction="column" gap={4} alignItems="stretch">
@@ -103,7 +107,10 @@ export const MedusaPickerModal = ({
 
             {selectedCount > 0 && (
               <Typography variant="pi" textColor="neutral600">
-                {selectedCount} item{selectedCount !== 1 ? 's' : ''} selected
+                {formatMessage(
+                  { id: selectedCount === 1 ? `${pluginId}.modal.itemsSelected` : `${pluginId}.modal.itemsSelected_other`, defaultMessage: selectedCount === 1 ? '{count} item selected' : '{count} items selected' },
+                  { count: selectedCount }
+                )}
               </Typography>
             )}
 
@@ -113,7 +120,7 @@ export const MedusaPickerModal = ({
                 alignItems="center"
                 style={{ height: '200px' }}
               >
-                <Loader>Loading...</Loader>
+                <Loader>{formatMessage({ id: `${pluginId}.modal.loading`, defaultMessage: 'Loading...' })}</Loader>
               </Flex>
             ) : error ? (
               <Flex
@@ -124,7 +131,7 @@ export const MedusaPickerModal = ({
                 style={{ height: '200px' }}
               >
                 <Typography variant="omega" textColor="danger600">
-                  Error loading data
+                  {formatMessage({ id: `${pluginId}.modal.error`, defaultMessage: 'Error loading data' })}
                 </Typography>
                 <Typography variant="pi" textColor="neutral600">
                   {error}
@@ -138,7 +145,7 @@ export const MedusaPickerModal = ({
                 style={{ height: '200px' }}
               >
                 <Typography variant="omega" textColor="neutral600">
-                  No items found
+                  {formatMessage({ id: `${pluginId}.modal.noItems`, defaultMessage: 'No items found' })}
                 </Typography>
               </Flex>
             ) : (
@@ -190,17 +197,17 @@ export const MedusaPickerModal = ({
                       disabled={page <= 1}
                       onClick={() => setPage((p) => Math.max(1, p - 1))}
                     >
-                      Previous
+                      {formatMessage({ id: `${pluginId}.modal.previous`, defaultMessage: 'Previous' })}
                     </Button>
                     <Typography variant="pi" textColor="neutral600">
-                      Page {page} of {totalPages}
+                      {formatMessage({ id: `${pluginId}.modal.pageOf`, defaultMessage: 'Page {page} of {total}' }, { page, total: totalPages })}
                     </Typography>
                     <Button
                       variant="tertiary"
                       disabled={page >= totalPages}
                       onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                     >
-                      Next
+                      {formatMessage({ id: `${pluginId}.modal.next`, defaultMessage: 'Next' })}
                     </Button>
                   </Flex>
                 )}
@@ -210,10 +217,12 @@ export const MedusaPickerModal = ({
         </Modal.Body>
         <Modal.Footer>
           <Modal.Close>
-            <Button variant="tertiary">Cancel</Button>
+            <Button variant="tertiary">{formatMessage({ id: `${pluginId}.modal.cancel`, defaultMessage: 'Cancel' })}</Button>
           </Modal.Close>
           <Button onClick={handleConfirm}>
-            Select {selectedCount > 0 ? `(${selectedCount})` : ''}
+            {selectedCount > 0
+              ? formatMessage({ id: `${pluginId}.modal.selectWithCount`, defaultMessage: 'Select ({count})' }, { count: selectedCount })
+              : formatMessage({ id: `${pluginId}.modal.select`, defaultMessage: 'Select' })}
           </Button>
         </Modal.Footer>
       </Modal.Content>

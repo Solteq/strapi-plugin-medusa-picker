@@ -74,9 +74,10 @@ export default {
   },
 
   async registerTrads({ locales }: { locales: string[] }) {
+    const enTranslations = (await import('./translations/en.json')).default;
     return locales.map((locale) => ({
-      data: {},
       locale,
+      data: locale === 'en' ? enTranslations : {},
     }));
   },
 };

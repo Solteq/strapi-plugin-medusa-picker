@@ -1,6 +1,8 @@
 import React from 'react';
 import { Box, Flex, IconButton, Typography } from '@strapi/design-system';
 import { Cross } from '@strapi/icons';
+import { useIntl } from 'react-intl';
+import pluginId from '../pluginId';
 import type { MedusaReference } from '../types';
 
 interface SelectedItemsListProps {
@@ -9,11 +11,13 @@ interface SelectedItemsListProps {
 }
 
 export const SelectedItemsList = ({ items, onRemove }: SelectedItemsListProps) => {
+  const { formatMessage } = useIntl();
+
   if (!items || items.length === 0) {
     return (
       <Box padding={4} background="neutral100" hasRadius>
         <Typography variant="pi" textColor="neutral600">
-          No items selected. Click "Select from Medusa" to add items.
+          {formatMessage({ id: `${pluginId}.input.noSelection`, defaultMessage: 'No items selected. Click "Select from Medusa" to add items.' })}
         </Typography>
       </Box>
     );
@@ -37,12 +41,12 @@ export const SelectedItemsList = ({ items, onRemove }: SelectedItemsListProps) =
                 {item.name}
               </Typography>
               <Typography textColor="neutral500" variant="pi">
-                {item.type}: {item.medusa_id}
+                {item.type}: {item.external_id ?? item.medusa_id}
               </Typography>
             </Flex>
             <IconButton
               onClick={() => onRemove(item.medusa_id)}
-              label="Remove"
+              label={formatMessage({ id: `${pluginId}.input.remove`, defaultMessage: 'Remove' })}
               variant="ghost"
             >
               <Cross />

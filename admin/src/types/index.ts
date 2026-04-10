@@ -7,6 +7,7 @@ export interface MedusaReference {
   medusa_id: string;
   type: 'product' | 'collection' | 'category';
   name: string;
+  external_id?: string;
 }
 
 export interface MedusaProduct {
@@ -15,6 +16,7 @@ export interface MedusaProduct {
   handle: string;
   thumbnail?: string;
   variants?: Array<{ sku?: string }>;
+  external_id?: string;
 }
 
 export interface MedusaCategory {
@@ -22,12 +24,14 @@ export interface MedusaCategory {
   name: string;
   handle: string;
   parent_category?: { id: string };
+  external_id?: string;
 }
 
 export interface MedusaCollection {
   id: string;
   title: string;
   handle: string;
+  external_id?: string;
 }
 
 export type MedusaEntityType = 'product' | 'collection' | 'category';
@@ -39,6 +43,7 @@ export interface MedusaEntity {
   thumbnail?: string;
   sku?: string;
   type: MedusaEntityType;
+  external_id?: string;
 }
 
 export interface FetchParams {
